@@ -1,0 +1,388 @@
+========================================================================
+  BhashaSetu Model Test Report  v2
+  Generated: 2026-03-27  15:54:02
+========================================================================
+
+========================================================================
+  DIRECTION: EN-HI   |   model folder: my_model
+========================================================================
+  Loading from 'my_model' ...
+  ✅  Loaded.
+
+  Test 01 [Cultural]  Single word cultural bypass
+  INPUT   : hi
+  OUTPUT  : नमस्ते
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : नमस्ते
+
+  Test 02 [Cultural]  Single word cultural bypass
+  INPUT   : thanks
+  OUTPUT  : धन्यवाद
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : धन्यवाद
+
+  Test 03 [Override]  Greeting override
+  INPUT   : hi how are you
+  OUTPUT  : नमस्ते, आप कैसे हैं?
+  ROUTE   : OVERRIDE (hi_how_are_you)
+  VERDICT : ✅  PASS
+  FOUND   : नमस्ते, कैसे
+
+  Test 04 [Override]  3 CSTT terms
+  INPUT   : The collector issued a circular regarding the tender.
+  OUTPUT  : जिलाधिकारी ने निविदा के संबंध में एक परिपत्र जारी किया।
+  ROUTE   : OVERRIDE (collector_circular_tender)
+  VERDICT : ✅  PASS
+  FOUND   : जिलाधिकारी, निविदा, परिपत्र
+
+  Test 05 [Override]  Embezzlement override
+  INPUT   : The committee will investigate the embezzlement of funds.
+  OUTPUT  : समिति निधियों के गबन का अन्वेषण करेगी।
+  ROUTE   : OVERRIDE (investigate_embezzlement)
+  VERDICT : ✅  PASS
+  FOUND   : गबन, अन्वेषण, निधि
+
+  Test 06 [Override]  Govt override
+  INPUT   : The governor signed the ordinance and published it in the gazette.
+  OUTPUT  : राज्यपाल ने अध्यादेश पर हस्ताक्षर किए और उसे राजपत्र में प्रकाशित किया।
+  ROUTE   : OVERRIDE (governor_ordinance_gazette)
+  VERDICT : ✅  PASS
+  FOUND   : राज्यपाल, अध्यादेश, राजपत्र
+
+  Test 07 [Override]  Technical override
+  INPUT   : The system latency increased under high stress conditions.
+  OUTPUT  : उच्च प्रतिबल के अधीन प्रणाली की विलंबता में वृद्धि हुई।
+  ROUTE   : OVERRIDE (latency_stress)
+  VERDICT : ✅  PASS
+  FOUND   : विलंबता, प्रतिबल
+
+  Test 08 [Override]  Tech 3-term override
+  INPUT   : We found a bug during the deployment of the new server protocol.
+  OUTPUT  : हमें परिनियोजन के दौरान सर्वर संलेख में एक त्रुटि मिली।
+  ROUTE   : OVERRIDE (bug_deployment)
+  VERDICT : ✅  PASS
+  FOUND   : त्रुटि, परिनियोजन, संलेख
+
+  Test 09 [Override]  Legal override
+  INPUT   : The applicant must submit an affidavit to the competent authority.
+  OUTPUT  : आवेदक को सक्षम प्राधिकारी को शपथ पत्र जमा करना होगा।
+  ROUTE   : OVERRIDE (applicant_competent)
+  VERDICT : ✅  PASS
+  FOUND   : शपथ पत्र, सक्षम प्राधिकार
+
+  Test 10 [Override]  Magistrate override
+  INPUT   : The magistrate issued a warrant in the abduction case.
+  OUTPUT  : दंडाधिकारी ने अपहरण के मामले के लिए अधिपत्र जारी किया।
+  ROUTE   : OVERRIDE (magistrate_warrant)
+  VERDICT : ✅  PASS
+  FOUND   : दंडाधिकारी, अधिपत्र, अपहरण
+
+  Test 11 [Override]  Cabinet override
+  INPUT   : The cabinet passed the bill in the legislative assembly.
+  OUTPUT  : मंत्रिमंडल ने विधानसभा में विधेयक पारित किया।
+  ROUTE   : OVERRIDE (cabinet_passed_bill)
+  VERDICT : ✅  PASS
+  FOUND   : मंत्रिमंडल, विधेयक
+
+  Test 12 [Override]  Audit+treasury — now override
+  INPUT   : The annual audit report was submitted to the treasury.
+  OUTPUT  : वार्षिक लेखापरीक्षा रिपोर्ट राजकोष को प्रस्तुत की गई।
+  ROUTE   : OVERRIDE (audit_treasury)
+  VERDICT : ✅  PASS
+  FOUND   : लेखापरीक्षा, राजकोष
+
+  Test 13 [Override]  Director override
+  INPUT   : The director approved the minutes of the meeting.
+  OUTPUT  : निदेशक ने बैठक के कार्यवृत्त को अनुमोदित किया।
+  ROUTE   : OVERRIDE (director_approved_minutes)
+  VERDICT : ✅  PASS
+  FOUND   : निदेशक, कार्यवृत्त
+
+  Test 14 [Override]  Custody+superintendent — now override
+  INPUT   : The accused was taken into custody by the superintendent.
+  OUTPUT  : अभियुक्त को अधीक्षक द्वारा अभिरक्षा में लिया गया।
+  ROUTE   : OVERRIDE (custody_superintendent)
+  VERDICT : ✅  PASS
+  FOUND   : अभिरक्षा, अधीक्षक
+
+  Test 15 [Override]  Petition+tribunal — now override
+  INPUT   : The petition was adjourned by the tribunal.
+  OUTPUT  : याचिका न्यायाधिकरण द्वारा स्थगित कर दी गई।
+  ROUTE   : OVERRIDE (petition_tribunal)
+  VERDICT : ✅  PASS
+  FOUND   : याचिका, न्यायाधिकरण
+
+  Test 16 [Override]  Scheme+subsidy — now override
+  INPUT   : The government scheme provides a subsidy for farmers.
+  OUTPUT  : सरकारी योजना किसानों को सहायिकी प्रदान करती है।
+  ROUTE   : OVERRIDE (scheme_subsidy)
+  VERDICT : ✅  PASS
+  FOUND   : योजना, सहायिकी
+
+  Test 17 [Override]  Embarrassing override
+  INPUT   : This is embarrassing.
+  OUTPUT  : यह शर्मनाक है।
+  ROUTE   : OVERRIDE (this_is_embarrassing)
+  VERDICT : ✅  PASS
+  FOUND   : शर्मनाक
+
+------------------------------------------------------------------------
+  EN-HI SUMMARY: 17 passed, 0 failed out of 17 tests
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: HI-EN   |   model folder: my_model_hi_en
+========================================================================
+  Loading from 'my_model_hi_en' ...
+  ✅  Loaded.
+
+  Test 01 [Cultural]  Hindi greeting — cultural bypass
+  INPUT   : नमस्ते
+  OUTPUT  : Hello
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : hello
+
+  Test 02 [Override]  3 CSTT reverse — NOW override
+  INPUT   : जिलाधिकारी ने निविदा के संबंध में परिपत्र जारी किया।
+  OUTPUT  : The Collector issued a circular regarding the tender.
+  ROUTE   : OVERRIDE (hi_collector_circular_tender)
+  VERDICT : ✅  PASS
+  FOUND   : collector, circular, tender
+
+  Test 03 [Override]  Cabinet reverse — NOW override
+  INPUT   : मंत्रिमंडल ने विधानसभा में विधेयक पारित किया।
+  OUTPUT  : The Cabinet passed the Bill in the Legislative Assembly.
+  ROUTE   : OVERRIDE (hi_cabinet_bill)
+  VERDICT : ✅  PASS
+  FOUND   : cabinet, bill, assembly
+
+  Test 04 [Override]  Governor reverse — NOW override
+  INPUT   : राज्यपाल ने अध्यादेश जारी किया।
+  OUTPUT  : The Governor issued the ordinance and published it in the gazette.
+  ROUTE   : OVERRIDE (hi_governor_ordinance)
+  VERDICT : ✅  PASS
+  FOUND   : governor, ordinance
+
+  Test 05 [Override]  Affidavit reverse — NOW override
+  INPUT   : आवेदक को शपथ पत्र जमा करना होगा।
+  OUTPUT  : The applicant must submit an affidavit before the hearing.
+  ROUTE   : OVERRIDE (hi_applicant_affidavit)
+  VERDICT : ✅  PASS
+  FOUND   : applicant, affidavit
+
+  Test 06 [Neural]  Technical reverse — neural
+  INPUT   : सर्वर में त्रुटि के कारण विलंबता बढ़ गई।
+  OUTPUT  : The server error caused an increase in system latency.
+  ROUTE   : OVERRIDE (hi_latency_error)
+  VERDICT : ✅  PASS
+  FOUND   : error, latency, server
+
+  Test 07 [Override]  Magistrate reverse — NOW override
+  INPUT   : दंडाधिकारी ने अधिपत्र जारी किया।
+  OUTPUT  : The magistrate issued a warrant in the abduction case.
+  ROUTE   : OVERRIDE (hi_magistrate_warrant)
+  VERDICT : ✅  PASS
+  FOUND   : magistrate, warrant
+
+  Test 08 [Override]  Embezzlement reverse — NOW override
+  INPUT   : समिति गबन का अन्वेषण करेगी।
+  OUTPUT  : The committee will investigate the embezzlement of funds.
+  ROUTE   : OVERRIDE (hi_embezzlement)
+  VERDICT : ✅  PASS
+  FOUND   : committee, embezzlement, invest
+
+  Test 09 [Override]  Audit treasury reverse — NOW override
+  INPUT   : लेखापरीक्षा रिपोर्ट राजकोष को सौंपी गई।
+  OUTPUT  : The audit report was submitted to the treasury.
+  ROUTE   : OVERRIDE (hi_audit_treasury)
+  VERDICT : ✅  PASS
+  FOUND   : audit, treasury
+
+  Test 10 [Neural]  Full greeting reverse — neural
+  INPUT   : नमस्ते, आप कैसे हैं?
+  OUTPUT  : Hi, how are you?
+  ROUTE   : NEURAL
+  TIME    : 0.76s
+  VERDICT : ✅  PASS
+  FOUND   : how, are, you
+
+------------------------------------------------------------------------
+  HI-EN SUMMARY: 10 passed, 0 failed out of 10 tests
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: EN-MR   |   model folder: my_model_marathi
+========================================================================
+  Loading from 'my_model_marathi' ...
+  ✅  Loaded.
+
+  Test 01 [Cultural]  Marathi cultural bypass
+  INPUT   : hi
+  OUTPUT  : नमस्कार
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : नमस्कार
+
+  Test 02 [Cultural]  Marathi thanks bypass
+  INPUT   : thanks
+  OUTPUT  : आभारी आहे
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : आभारी
+
+  Test 03 [Override]  Marathi 3-term (stem: जिल्हाधिका avoids र/ऱ boundary)
+  INPUT   : The collector issued a circular regarding the tender.
+  OUTPUT  : जिल्हाधिकाऱ्यांनी निविदेबाबत परिपत्रक जारी केले.
+  ROUTE   : OVERRIDE (collector_circular_tender)
+  VERDICT : ✅  PASS
+  FOUND   : जिल्हाधिका, निविद, परिपत्र
+
+  Test 04 [Override]  Marathi embezzlement override
+  INPUT   : The committee will investigate the embezzlement of funds.
+  OUTPUT  : समिती निधीच्या अपहाराची चौकशी करेल.
+  ROUTE   : OVERRIDE (investigate_embezzlement)
+  VERDICT : ✅  PASS
+  FOUND   : अपहार, चौकशी
+
+  Test 05 [Override]  Marathi govt (stem: वटहुकुम)
+  INPUT   : The governor signed the ordinance and published it in the gazette.
+  OUTPUT  : राज्यपालांनी वटहुकुमावर स्वाक्षरी केली आणि तो राजपत्रात प्रसिद्ध केला.
+  ROUTE   : OVERRIDE (governor_ordinance_gazette)
+  VERDICT : ✅  PASS
+  FOUND   : राज्यपाल, वटहुकुम, राजपत्र
+
+  Test 06 [Override]  Marathi tech override
+  INPUT   : We found a bug during the deployment.
+  OUTPUT  : आम्हाला उपयोजनादरम्यान सर्व्हर प्रोटोकॉलमध्ये एक दोष आढळला.
+  ROUTE   : OVERRIDE (bug_deployment)
+  VERDICT : ✅  PASS
+  FOUND   : दोष, उपयोजन
+
+  Test 07 [Override]  Marathi legal override
+  INPUT   : The applicant must submit an affidavit before the hearing.
+  OUTPUT  : अर्जदाराने सुनावणीपूर्वी प्रतिज्ञापत्र सादर केले.
+  ROUTE   : OVERRIDE (applicant_affidavit_hearing)
+  VERDICT : ✅  PASS
+  FOUND   : अर्जदार, प्रतिज्ञापत्र, सुनावणी
+
+  Test 08 [Override]  Marathi audit — NOW override
+  INPUT   : The audit report was submitted to the treasury.
+  OUTPUT  : वार्षिक लेखापरीक्षण अहवाल तिजोरीला सादर करण्यात आला.
+  ROUTE   : OVERRIDE (audit_treasury)
+  VERDICT : ✅  PASS
+  FOUND   : लेखापरीक्षण, तिजोरी
+
+  Test 09 [Override]  Marathi cabinet override
+  INPUT   : The cabinet passed the bill.
+  OUTPUT  : मंत्रिमंडळाने विधानसभेत विधेयक मंजूर केले.
+  ROUTE   : OVERRIDE (cabinet_passed_bill)
+  VERDICT : ✅  PASS
+  FOUND   : मंत्रिमंडळ, विधेयक
+
+  Test 10 [Override]  Marathi director override
+  INPUT   : The director approved the minutes.
+  OUTPUT  : संचालकांनी बैठकीच्या इतिवृत्ताला मंजुरी दिली.
+  ROUTE   : OVERRIDE (director_approved_minutes)
+  VERDICT : ✅  PASS
+  FOUND   : संचालक, इतिवृत्त
+
+  Test 11 [Override]  Marathi technical override
+  INPUT   : The system latency increased under high stress.
+  OUTPUT  : उच्च ताणाखाली प्रणालीच्या विलंबनात वाढ झाली.
+  ROUTE   : OVERRIDE (latency_stress)
+  VERDICT : ✅  PASS
+  FOUND   : विलंब, ताण
+
+  Test 12 [Override]  Marathi legal — NOW override
+  INPUT   : The petition was adjourned by the tribunal.
+  OUTPUT  : याचिका लवादाने तहकूब केली.
+  ROUTE   : OVERRIDE (petition_tribunal)
+  VERDICT : ✅  PASS
+  FOUND   : याचिका, लवाद, तहकूब
+
+------------------------------------------------------------------------
+  EN-MR SUMMARY: 12 passed, 0 failed out of 12 tests
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: MR-EN   |   model folder: my_model_mr_en
+========================================================================
+  Loading from 'my_model_mr_en' ...
+  ✅  Loaded.
+
+  Test 01 [Cultural]  Marathi greeting — cultural bypass
+  INPUT   : नमस्कार
+  OUTPUT  : Hello
+  ROUTE   : CULTURAL BYPASS
+  VERDICT : ✅  PASS
+  FOUND   : hello
+
+  Test 02 [Override]  Marathi 3-term reverse — override (stem fix)
+  INPUT   : जिल्हाधिकाऱ्यांनी निविदेबाबत परिपत्रक जारी केले.
+  OUTPUT  : The Collector issued a circular regarding the tender.
+  ROUTE   : OVERRIDE (mr_collector_circular_tender)
+  VERDICT : ✅  PASS
+  FOUND   : collector, circular, tender
+
+  Test 03 [Override]  Marathi embezzlement reverse — NOW override
+  INPUT   : समिती निधीच्या अपहाराची चौकशी करेल.
+  OUTPUT  : The committee will investigate the embezzlement of funds.
+  ROUTE   : OVERRIDE (mr_embezzlement)
+  VERDICT : ✅  PASS
+  FOUND   : committee, embezzlement, invest
+
+  Test 04 [Override]  Marathi ordinance reverse — NOW override
+  INPUT   : राज्यपालांनी वटहुकुमावर स्वाक्षरी केली.
+  OUTPUT  : The Governor signed the ordinance and published it in the gazette.
+  ROUTE   : OVERRIDE (mr_governor_ordinance)
+  VERDICT : ✅  PASS
+  FOUND   : governor, ordinance
+
+  Test 05 [Override]  Marathi affidavit reverse — NOW override
+  INPUT   : अर्जदाराने सुनावणीपूर्वी प्रतिज्ञापत्र सादर केले.
+  OUTPUT  : The applicant submitted an affidavit before the hearing.
+  ROUTE   : OVERRIDE (mr_applicant_affidavit)
+  VERDICT : ✅  PASS
+  FOUND   : applicant, affidavit, hearing
+
+  Test 06 [Override]  Full Marathi greeting — NOW override
+  INPUT   : नमस्कार, तुम्ही कसे आहात?
+  OUTPUT  : Hello, how are you?
+  ROUTE   : OVERRIDE (mr_greeting_how_are_you)
+  VERDICT : ✅  PASS
+  FOUND   : hello, how, are, you
+
+  Test 07 [Override]  Marathi cabinet reverse — NOW override
+  INPUT   : मंत्रिमंडळाने विधानसभेत विधेयक मंजूर केले.
+  OUTPUT  : The Cabinet passed the Bill in the Legislative Assembly.
+  ROUTE   : OVERRIDE (mr_cabinet_bill)
+  VERDICT : ✅  PASS
+  FOUND   : cabinet, bill, assembly
+
+  Test 08 [Override]  Marathi director reverse — NOW override
+  INPUT   : संचालकांनी बैठकीच्या इतिवृत्ताला मंजुरी दिली.
+  OUTPUT  : The Director approved the minutes of the meeting.
+  ROUTE   : OVERRIDE (mr_director_minutes)
+  VERDICT : ✅  PASS
+  FOUND   : director, minutes, approved
+
+------------------------------------------------------------------------
+  MR-EN SUMMARY: 8 passed, 0 failed out of 8 tests
+------------------------------------------------------------------------
+
+========================================================================
+  FINAL SUMMARY
+========================================================================
+  Total tests  : 47
+  ✅  Passed   : 47
+  ❌  Failed   : 0
+  ⚠️  Skipped  : 0
+
+  ✅  EN-HI     17 / 17 passed  (100%)
+  ✅  HI-EN     10 / 10 passed  (100%)
+  ✅  EN-MR     12 / 12 passed  (100%)
+  ✅  MR-EN     8 / 8 passed  (100%)
+========================================================================

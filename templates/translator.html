@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHASHASETU - AI Translator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-header: #0f172a;
+            --input-bg: #f1f5f9;
+            --input-border: #cbd5e1;
+            --accent-primary: #3b82f6;
+            --accent-hover: #2563eb;
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #111111 100%);
+            --card-bg: #1e293b;
+            --text-main: #cbd5e1;
+            --text-header: #f8fafc;
+            --input-bg: #0f172a;
+            --input-border: #334155;
+            --accent-primary: #60a5fa;
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            padding: 40px 20px;
+        }
+
+        .main-card, .history-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-card);
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .title {
+            font-weight: 800;
+            color: var(--text-header);
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        textarea, .form-select, .form-control {
+            background-color: var(--input-bg) !important;
+            border: 2px solid var(--input-border) !important;
+            color: var(--text-header) !important;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+        textarea:focus, .form-select:focus, .form-control:focus {
+            background-color: var(--card-bg) !important;
+            border-color: var(--accent-primary) !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary, .btn-success {
+            background-color: var(--accent-primary) !important;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover, .btn-success:hover {
+            background-color: var(--accent-hover) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+
+        .output-box {
+            background-color: var(--input-bg);
+            border-radius: 16px;
+            padding: 25px;
+            min-height: 120px;
+            margin-top: 25px;
+            border: 1px solid var(--input-border);
+            color: var(--text-header);
+            position: relative;
+        }
+
+        .transliteration-switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: none;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .theme-toggle {
+            position: absolute; top: 20px; right: 20px;
+            cursor: pointer; font-size: 1.5rem; color: #fff;
+            opacity: 0.7; transition: 0.3s;
+        }
+        .theme-toggle:hover { opacity: 1; transform: rotate(15deg); }
+
+        [data-theme="dark"] ::placeholder { color: #64748b !important; opacity: 1; }
+        [data-theme="dark"] #micIcon { color: #f8fafc !important; }
+
+        .history-item {
+            padding: 15px; border-radius: 12px; border: 1px solid var(--input-border);
+            margin-bottom: 10px; transition: 0.2s; cursor: pointer;
+        }
+        .history-item:hover { border-color: var(--accent-primary); background: var(--input-bg); }
+
+        .upload-zone {
+            border: 2px dashed var(--input-border); border-radius: 16px; padding: 40px;
+            text-align: center; cursor: pointer; transition: 0.3s; background: var(--input-bg);
+        }
+        .upload-zone:hover { border-color: var(--accent-primary); background: var(--card-bg); }
+
+        .nav-pills .nav-link { border-radius: 12px; padding: 10px 20px; color: var(--text-main); font-weight: 600; }
+        .nav-pills .nav-link.active { background-color: var(--accent-primary); color: white; }
+
+        /* Mic recording indicator */
+        .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* Error state for output box */
+        .output-error { color: #ef4444; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container" style="max-width: 1200px;">
+    <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="main-card">
+                <h2 class="title">BHASHASETU</h2>
+
+                <ul class="nav nav-pills justify-content-center mb-4" id="pills-tab" role="tablist">
+                    <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#text-tab">Text Translate</button></li>
+                    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#doc-tab">Document (File)</button></li>
+                </ul>
+
+                <div class="d-flex justify-content-center gap-3 mb-4 align-items-center">
+                    <select class="form-select w-25" id="sourceLang" onchange="handleLangChange()">
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="mr">Marathi</option>
+                    </select>
+                    <i class="bi bi-arrow-left-right fs-4 text-primary" style="cursor:pointer;" onclick="swapLanguages()"></i>
+                    <select class="form-select w-25" id="targetLang" onchange="handleLangChange()">
+                        <option value="hi">Hindi</option>
+                        <option value="en">English</option>
+                        <option value="mr">Marathi</option>
+                    </select>
+                </div>
+                <input type="hidden" id="direction" value="en-hi">
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="text-tab">
+
+                        <div class="transliteration-switch" id="transliterationArea">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="transliterationToggle">
+                                <label class="form-check-label" for="transliterationToggle">🅰️ ➡ अ Smart Typing (Hinglish)</label>
+                            </div>
+                        </div>
+
+                        <div class="position-relative">
+                            <textarea class="form-control" id="inputText" rows="4" placeholder="Type here..."></textarea>
+                            <button class="btn btn-link position-absolute top-0 end-0 text-decoration-none text-muted"
+                                    onclick="toggleSpeech()" id="micBtn" title="Voice input">
+                                <i class="bi bi-mic-fill fs-5" id="micIcon"></i>
+                            </button>
+                        </div>
+
+                        <!-- FIX: Correction note now correctly shows what it was corrected TO -->
+                        <div id="correctionNote" class="text-info small mt-2" style="display:none;">
+                            ✨ Auto-corrected to: "<span id="correctedWord"></span>"
+                        </div>
+
+                        <button class="btn btn-primary w-100 mt-4" onclick="translateText()">Translate Now</button>
+
+                        <div class="output-box">
+                            <span id="outputText">Translation will appear here...</span>
+                            <div class="position-absolute bottom-0 end-0 p-3">
+                                <button class="btn btn-sm btn-light text-primary border-0 me-1" onclick="copyToClipboard()" title="Copy"><i class="bi bi-clipboard"></i></button>
+                                <button class="btn btn-sm btn-light text-primary border-0" onclick="speakOutput()" title="Read aloud"><i class="bi bi-volume-up-fill"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="doc-tab">
+                        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                            <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
+                            <p class="mt-2 mb-0 fw-bold">Click to Upload .txt or .pdf file</p>
+                            <p class="text-muted small">Max size: 2MB</p>
+                            <!-- FIX: Added .pdf to accepted file types to match backend capability -->
+                            <input type="file" id="fileInput" accept=".txt,.pdf" style="display:none" onchange="handleFileSelect()">
+                        </div>
+                        <p id="fileName" class="text-center mt-2 text-primary fw-bold"></p>
+                        <button class="btn btn-success w-100 mt-3" onclick="translateFile()">Upload & Translate File</button>
+                        <div id="downloadSection" class="text-center mt-4" style="display:none;">
+                            <p class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> Translation Complete!</p>
+                            <a id="downloadBtn" class="btn btn-outline-primary"><i class="bi bi-download"></i> Download File</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="history-card h-100">
+                <h5 class="mb-4 fw-bold" style="color:var(--text-header)"><i class="bi bi-clock-history"></i> Recent History</h5>
+                <div id="historyList"></div>
+                <button class="btn btn-sm btn-outline-danger w-100 mt-4" onclick="clearHistory()">Clear History</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // --- VARIABLES ---
+    const sourceLang = document.getElementById('sourceLang');
+    const targetLang = document.getElementById('targetLang');
+    const directionInput = document.getElementById('direction');
+    const transToggle = document.getElementById('transliterationToggle');
+    const transArea = document.getElementById('transliterationArea');
+
+    // --- DARK MODE ---
+    function toggleTheme() {
+        const html = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        if (html.getAttribute('data-theme') === 'light') {
+            html.setAttribute('data-theme', 'dark');
+            icon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+        } else {
+            html.setAttribute('data-theme', 'light');
+            icon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+        }
+    }
+
+    // --- LANGUAGE HANDLING ---
+    function handleLangChange() {
+        const src = sourceLang.value;
+        const tgt = targetLang.value;
+
+        // FIX: Prevent source == target (would result in no valid model like en-en)
+        if (src === tgt) {
+            // Automatically pick a different target
+            const options = ['en', 'hi', 'mr'].filter(v => v !== src);
+            targetLang.value = options[0];
+        }
+
+        directionInput.value = sourceLang.value + "-" + targetLang.value;
+
+        // Show Transliteration toggle only when source is Hindi or Marathi
+        if (sourceLang.value === 'hi' || sourceLang.value === 'mr') {
+            transArea.style.display = 'flex';
+        } else {
+            transArea.style.display = 'none';
+            transToggle.checked = false;
+        }
+    }
+
+    function swapLanguages() {
+        const temp = sourceLang.value;
+        sourceLang.value = targetLang.value;
+        targetLang.value = temp;
+        handleLangChange();
+    }
+
+    // --- TRANSLITERATION LOGIC ---
+    // Calls /transliterate (Flask proxy) instead of Google directly.
+    // Browsers block direct calls to inputtools.google.com (CORS policy).
+    document.getElementById('inputText').addEventListener('keydown', async function(e) {
+        if (!transToggle.checked) return;
+
+        if (e.key === ' ' || e.key === 'Enter') {
+            const cursorPosition = this.selectionStart;
+            const text = this.value;
+            const lastWordMatch = text.slice(0, cursorPosition).match(/(\S+)$/);
+
+            if (!lastWordMatch) return;
+
+            const word = lastWordMatch[0];
+            const langCode = sourceLang.value === 'hi' ? 'hi-t-i0-und' : 'mr-t-i0-und';
+            const appendChar = e.key === 'Enter' ? '\n' : ' ';
+
+            e.preventDefault();
+
+            const insertWord = (w) => {
+                const before = text.slice(0, cursorPosition - word.length);
+                const after  = text.slice(cursorPosition);
+                this.value = before + w + appendChar + after;
+                this.selectionStart = this.selectionEnd = before.length + w.length + 1;
+            };
+
+            try {
+                const res = await fetch('/transliterate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ word: word, lang_code: langCode })
+                });
+                const data = await res.json();
+                insertWord(data.result || word);
+            } catch (err) {
+                insertWord(word);
+                console.error('Transliteration proxy error:', err);
+            }
+        }
+    });
+
+    // --- TRANSLATION ---
+    async function translateText() {
+        const text = document.getElementById('inputText').value.trim();
+        if (!text) return alert("Please enter some text to translate.");
+
+        const outputEl = document.getElementById('outputText');
+        const corrNote = document.getElementById('correctionNote');
+
+        outputEl.classList.remove('output-error');
+        outputEl.innerText = "Translating...";
+        corrNote.style.display = 'none';
+
+        try {
+            // FIX: Added try/catch so network errors show a proper message instead of hanging
+            const res = await fetch('/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, direction: directionInput.value })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || data.error) {
+                outputEl.classList.add('output-error');
+                outputEl.innerText = "Error: " + (data.error || "Unknown error from server.");
+                return;
+            }
+
+            outputEl.innerText = data.translation;
+            addToHistory(text, data.translation, directionInput.value);
+
+            // FIX: Correction note now shows the CORRECTED text (what it was changed TO),
+            // not the original text. data.corrected_text contains the corrected version.
+            if (data.corrected_text) {
+                document.getElementById('correctedWord').innerText = data.corrected_text;
+                corrNote.style.display = 'block';
+            }
+
+        } catch (err) {
+            outputEl.classList.add('output-error');
+            outputEl.innerText = "Network error. Please check that the server is running.";
+            console.error("Translation fetch error:", err);
+        }
+    }
+
+    // --- HISTORY ---
+    // FIX: Use data attributes + event listeners instead of inline onclick with
+    // raw template literal interpolation to prevent XSS and quote-breaking bugs.
+    function addToHistory(src, tgt, dir) {
+        let h = JSON.parse(localStorage.getItem('bhashasetu_history')) || [];
+        h.unshift({ src, tgt, dir });
+        if (h.length > 5) h.pop();
+        localStorage.setItem('bhashasetu_history', JSON.stringify(h));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const historyList = document.getElementById('historyList');
+        const items = JSON.parse(localStorage.getItem('bhashasetu_history')) || [];
+
+        if (items.length === 0) {
+            historyList.innerHTML = '<p class="text-muted small text-center">No history yet.</p>';
+            return;
+        }
+
+        historyList.innerHTML = '';
+        items.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.dataset.index = index;
+
+            // Safe text creation — no innerHTML interpolation
+            const badge = document.createElement('span');
+            badge.className = 'history-badge bg-secondary text-white px-2 py-1 rounded';
+            badge.style.fontSize = '0.7rem';
+            badge.textContent = item.dir.toUpperCase();
+
+            const srcDiv = document.createElement('div');
+            srcDiv.className = 'text-truncate small fw-bold mt-1';
+            srcDiv.style.color = 'var(--text-header)';
+            srcDiv.textContent = item.src;
+
+            const tgtDiv = document.createElement('div');
+            tgtDiv.className = 'text-truncate small text-muted';
+            tgtDiv.textContent = item.tgt;
+
+            div.appendChild(badge);
+            div.appendChild(srcDiv);
+            div.appendChild(tgtDiv);
+
+            // Safe event listener — no inline onclick
+            div.addEventListener('click', () => restore(item.src, item.tgt));
+            historyList.appendChild(div);
+        });
+    }
+
+    function restore(s, t) {
+        document.getElementById('inputText').value = s;
+        document.getElementById('outputText').innerText = t;
+        document.getElementById('outputText').classList.remove('output-error');
+    }
+
+    function clearHistory() {
+        localStorage.removeItem('bhashasetu_history');
+        renderHistory();
+    }
+
+    // --- UTILS ---
+    function copyToClipboard() {
+        const text = document.getElementById('outputText').innerText;
+        navigator.clipboard.writeText(text).catch(() => {
+            // Fallback for older browsers
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        });
+    }
+
+    // --- VOICE INPUT (Speech-to-Text) ---
+    // FIX: Check for SpeechRecognition browser support before using it
+    let recognition = null;
+    let isListening = false;
+
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+
+        recognition.onresult = function(e) {
+            document.getElementById('inputText').value = e.results[0][0].transcript;
+            isListening = false;
+            document.getElementById('micIcon').classList.remove('mic-active');
+        };
+
+        recognition.onerror = function(e) {
+            console.error("Speech recognition error:", e.error);
+            isListening = false;
+            document.getElementById('micIcon').classList.remove('mic-active');
+        };
+
+        recognition.onend = function() {
+            isListening = false;
+            document.getElementById('micIcon').classList.remove('mic-active');
+        };
+    } else {
+        // Hide mic button on unsupported browsers
+        document.getElementById('micBtn').style.display = 'none';
+    }
+
+    function toggleSpeech() {
+        if (!recognition) {
+            alert("Voice input is not supported in this browser. Please use Chrome.");
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+            return;
+        }
+
+        const currentLang = sourceLang.value;
+        if (currentLang === 'hi') {
+            recognition.lang = 'hi-IN';
+        } else if (currentLang === 'mr') {
+            recognition.lang = 'mr-IN';
+        } else {
+            recognition.lang = 'en-US';
+        }
+
+        isListening = true;
+        document.getElementById('micIcon').classList.add('mic-active');
+        recognition.start();
+    }
+
+    // --- VOICE OUTPUT (Text-to-Speech) ---
+    function speakOutput() {
+        const text = document.getElementById('outputText').innerText;
+        if (!text || text === 'Translation will appear here...') return;
+
+        const u = new SpeechSynthesisUtterance(text);
+        const d = directionInput.value;
+        u.lang = d.endsWith('hi') ? 'hi-IN' : d.endsWith('mr') ? 'mr-IN' : 'en-US';
+        window.speechSynthesis.speak(u);
+    }
+
+    // --- FILE UPLOAD ---
+    function handleFileSelect() {
+        const file = document.getElementById('fileInput').files[0];
+        if (file) document.getElementById('fileName').innerText = file.name;
+    }
+
+    async function translateFile() {
+        const file = document.getElementById('fileInput').files[0];
+        if (!file) return alert("Please select a file first.");
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('direction', directionInput.value);
+
+        const btn = document.querySelector('#doc-tab .btn-success');
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+        document.getElementById('downloadSection').style.display = 'none';
+
+        try {
+            const res = await fetch('/translate_file', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            btn.innerText = "Upload & Translate File";
+            btn.disabled = false;
+
+            if (data.translated_text) {
+                const blob = new Blob([data.translated_text], { type: 'text/plain; charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const dlBtn = document.getElementById('downloadBtn');
+                dlBtn.href = url;
+                dlBtn.download = "translated_" + file.name.replace(/\.pdf$/i, '.txt');
+                document.getElementById('downloadSection').style.display = 'block';
+            } else {
+                alert("Translation error: " + (data.error || "Unknown error."));
+            }
+        } catch (err) {
+            btn.innerText = "Upload & Translate File";
+            btn.disabled = false;
+            alert("Network error. Please check that the server is running.");
+            console.error("File translate error:", err);
+        }
+    }
+
+    // --- INIT ---
+    renderHistory();
+    handleLangChange();
+</script>
+</body>
+</html>

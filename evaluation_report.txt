@@ -1,0 +1,169 @@
+========================================================================
+  BhashaSetu — Performance Evaluation Report
+  Generated: 2026-04-15  21:04:13
+  Metrics: BLEU  |  chrF  |  TER
+========================================================================
+
+  Metric guide:
+    BLEU  0–100   Higher is better. 15–25 = good for Indian NMT.
+    chrF  0–100   Higher is better. Character-level — fairer for Devanagari.
+    TER   0–1+    LOWER is better. Edits needed per sentence. <0.5 = good.
+
+========================================================================
+  DIRECTION: EN-HI  |  model: my_model  |  sentences: 20
+========================================================================
+  Loading model from 'my_model' ...
+  ✅  Loaded.
+
+    #  Input (truncated)                           Route       Match
+  --------------------------------------------------------------------
+    1  The collector issued a circular regardin..  OVERRIDE    ✅
+    2  The governor signed the ordinance and pu..  OVERRIDE    ✅
+    3  The applicant must submit an affidavit b..  OVERRIDE    ✅
+    4  The cabinet passed the bill in the legis..  OVERRIDE    ✅
+    5  The director approved the minutes of the..  OVERRIDE    ✅
+    6  The committee will investigate the embez..  OVERRIDE    ✅
+    7  The magistrate issued a warrant in the a..  OVERRIDE    ✅
+    8  We found a bug during the deployment of ..  OVERRIDE    ✅
+    9  The system latency increased under high ..  OVERRIDE    ✅
+   10  The applicant must submit an affidavit t..  OVERRIDE    ✅
+   11  The annual audit report was submitted to..  OVERRIDE    ✅
+   12  The accused was taken into custody by th..  OVERRIDE    ✅
+   13  The petition was adjourned by the tribun..  OVERRIDE    ✅
+   14  The government scheme provides a subsidy..  OVERRIDE    ✅
+   15  The resolution was passed by the council..  NEURAL      ✅
+   16  The officer was suspended pending an inq..  NEURAL      ⚠️
+   17  The recruitment process will begin after..  NEURAL      ✅
+   18  The committee submitted its report on th..  NEURAL      ⚠️
+   19  The contract was awarded after the scrut..  NEURAL      ⚠️
+   20  The evidence was presented before the tr..  NEURAL      ⚠️
+
+------------------------------------------------------------------------
+  BLEU  :  73.42  (0–100, higher=better)
+  chrF  :  82.83  (0–100, higher=better)
+  TER   : 21.6667  (0–1+,  lower=better)
+  Routes: 14 override | 0 cultural | 6 neural
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: HI-EN  |  model: my_model_hi_en  |  sentences: 20
+========================================================================
+  Loading model from 'my_model_hi_en' ...
+  ✅  Loaded.
+
+    #  Input (truncated)                           Route       Match
+  --------------------------------------------------------------------
+    1  जिलाधिकारी ने निविदा के संबंध में परिपत्..  OVERRIDE    ✅
+    2  मंत्रिमंडल ने विधानसभा में विधेयक पारित ..  OVERRIDE    ✅
+    3  राज्यपाल ने अध्यादेश जारी किया।             OVERRIDE    ✅
+    4  आवेदक को शपथ पत्र जमा करना होगा।            OVERRIDE    ✅
+    5  दंडाधिकारी ने अधिपत्र जारी किया।            OVERRIDE    ✅
+    6  समिति गबन का अन्वेषण करेगी।                 OVERRIDE    ✅
+    7  लेखापरीक्षा रिपोर्ट राजकोष को सौंपी गई।     OVERRIDE    ✅
+    8  सर्वर में त्रुटि के कारण विलंबता बढ़ गई।    OVERRIDE    ✅
+    9  नमस्ते, आप कैसे हैं?                        NEURAL      ✅
+   10  याचिका न्यायाधिकरण द्वारा स्थगित कर दी गई।  NEURAL      ✅
+   11  अभियुक्त को अधीक्षक द्वारा अभिरक्षा में ..  NEURAL      ⚠️
+   12  परिषद ने संकल्प पारित किया।                 NEURAL      ✅
+   13  रिक्ति अधिसूचना जारी की गई।                 NEURAL      ⚠️
+   14  संविदा सभी निविदाओं की संवीक्षा के बाद प..  NEURAL      ⚠️
+   15  अधिकारी को कदाचार के कारण निलंबित किया ग..  NEURAL      ✅
+   16  सरकार की योजना किसानों को सहायिकी प्रदान..  NEURAL      ⚠️
+   17  मंत्रिमंडल ने बजट को अनुमोदित किया।         NEURAL      ✅
+   18  जांच समिति ने अपनी रिपोर्ट प्रस्तुत की।     NEURAL      ✅
+   19  न्यायालय ने अग्रिम जमानत की याचिका खारिज..  NEURAL      ⚠️
+   20  प्रशासन ने नई भर्ती नीति की घोषणा की।       NEURAL      ✅
+
+------------------------------------------------------------------------
+  BLEU  :  54.83  (0–100, higher=better)
+  chrF  :  73.80  (0–100, higher=better)
+  TER   : 37.5000  (0–1+,  lower=better)
+  Routes: 8 override | 0 cultural | 12 neural
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: EN-MR  |  model: my_model_marathi  |  sentences: 20
+========================================================================
+  Loading model from 'my_model_marathi' ...
+  ✅  Loaded.
+
+    #  Input (truncated)                           Route       Match
+  --------------------------------------------------------------------
+    1  The collector issued a circular regardin..  OVERRIDE    ✅
+    2  The governor signed the ordinance and pu..  OVERRIDE    ✅
+    3  The applicant must submit an affidavit b..  OVERRIDE    ✅
+    4  The cabinet passed the bill.                OVERRIDE    ✅
+    5  The director approved the minutes of the..  OVERRIDE    ✅
+    6  The committee will investigate the embez..  OVERRIDE    ✅
+    7  The magistrate issued a warrant in the a..  OVERRIDE    ✅
+    8  We found a bug during the deployment.       OVERRIDE    ✅
+    9  The system latency increased under high ..  OVERRIDE    ✅
+   10  The audit report was submitted to the tr..  OVERRIDE    ✅
+   11  The petition was adjourned by the tribun..  OVERRIDE    ✅
+   12  The government scheme provides a subsidy..  OVERRIDE    ✅
+   13  The officer was suspended pending an inq..  NEURAL      ❌
+   14  The resolution was passed by the council.   NEURAL      ❌
+   15  The recruitment notification was issued ..  NEURAL      ❌
+   16  The contract was awarded after scrutiny ..  NEURAL      ❌
+   17  The evidence was presented before the tr..  NEURAL      ❌
+   18  The vacancy notification was published i..  NEURAL      ❌
+   19  The applicant must submit an affidavit t..  OVERRIDE    ✅
+   20  The cabinet approved the budget allocati..  NEURAL      ❌
+
+------------------------------------------------------------------------
+  BLEU  :  63.67  (0–100, higher=better)
+  chrF  :  74.01  (0–100, higher=better)
+  TER   : 40.1709  (0–1+,  lower=better)
+  Routes: 13 override | 0 cultural | 7 neural
+------------------------------------------------------------------------
+
+========================================================================
+  DIRECTION: MR-EN  |  model: my_model_mr_en  |  sentences: 15
+========================================================================
+  Loading model from 'my_model_mr_en' ...
+  ✅  Loaded.
+
+    #  Input (truncated)                           Route       Match
+  --------------------------------------------------------------------
+    1  जिल्हाधिकाऱ्यांनी निविदेबाबत परिपत्रक जा..  OVERRIDE    ✅
+    2  समिती निधीच्या अपहाराची चौकशी करेल.         OVERRIDE    ✅
+    3  राज्यपालांनी वटहुकुमावर स्वाक्षरी केली.     OVERRIDE    ✅
+    4  अर्जदाराने सुनावणीपूर्वी प्रतिज्ञापत्र स..  OVERRIDE    ✅
+    5  मंत्रिमंडळाने विधानसभेत विधेयक मंजूर केले.  OVERRIDE    ✅
+    6  संचालकांनी बैठकीच्या इतिवृत्ताला मंजुरी ..  OVERRIDE    ✅
+    7  नमस्कार, तुम्ही कसे आहात?                   OVERRIDE    ✅
+    8  परिषदेने ठराव मंजूर केला.                   NEURAL      ❌
+    9  प्राधिकरणाने भरती अधिसूचना जारी केली.       NEURAL      ❌
+   10  लवादासमोर पुरावा सादर करण्यात आला.          NEURAL      ❌
+   11  याचिका लवादाने तहकूब केली.                  NEURAL      ✅
+   12  अधिकाऱ्याला चौकशी प्रलंबित असताना निलंबि..  NEURAL      ❌
+   13  शासनाने नवीन भरती धोरण जाहीर केले.          NEURAL      ⚠️
+   14  सर्व निविदांच्या छाननीनंतर कंत्राट देण्य..  NEURAL      ⚠️
+   15  राजपत्रात अधिसूचना प्रकाशित झाली.           NEURAL      ⚠️
+
+------------------------------------------------------------------------
+  BLEU  :  51.45  (0–100, higher=better)
+  chrF  :  57.53  (0–100, higher=better)
+  TER   : 50.4762  (0–1+,  lower=better)
+  Routes: 7 override | 0 cultural | 8 neural
+------------------------------------------------------------------------
+
+========================================================================
+  FINAL SUMMARY
+========================================================================
+  Direction       BLEU    chrF      TER   Sentences  Status
+  ------------------------------------------------------------
+  EN-HI          73.42   82.83  21.6667          20  ✅
+  HI-EN          54.83   73.80  37.5000          20  ✅
+  EN-MR          63.67   74.01  40.1709          20  ✅
+  MR-EN          51.45   57.53  50.4762          15  ✅
+
+  BLEU interpretation for Indian language NMT:
+    ≥ 30  : Excellent — near human quality
+    20–30 : Good — fluent and mostly accurate
+    10–20 : Acceptable — understandable but imperfect
+    < 10  : Poor — significant errors present
+
+  Note: Override sentences score BLEU=100 for their specific input.
+  Neural-only sentences reflect the raw model quality.
+========================================================================
