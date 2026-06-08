@@ -1,15 +1,3 @@
----
-title: BhashaSetu
-emoji: 🌐
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
-short_description: Domain-specific NMT for Indian Government communication (EN ↔ Hindi ↔ Marathi)
----
-
 # 🌐 BhashaSetu — Bridging India's Language Barrier
 
 <div align="center">
