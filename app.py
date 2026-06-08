@@ -238,48 +238,66 @@ cultural_bypass = {
     },
 }
 
-# ── 5. MODEL LOADING ──────────────────────────────────────────────────────────
-MODEL_LOADED = {"en-hi": False, "hi-en": False, "en-mr": False, "mr-en": False}
+# ── 5. LAZY MODEL LOADING ─────────────────────────────────────────────────────
+# Only 1 model is kept in RAM at a time to stay within Render free-tier 512 MB.
+# Each model is ~300 MB; loading all 4 simultaneously would require ~1.2 GB.
+# On first request for a direction the model loads (~30-60 s); subsequent
+# requests for the same direction are instant (cached in _cached_mdl).
 
-tokenizer_en_hi = model_en_hi = None
-tokenizer_hi_en = model_hi_en = None
-tokenizer_en_mr = model_en_mr = None
-tokenizer_mr_en = model_mr_en = None
+import gc
+import threading
 
+_MODEL_PATHS = {
+    "en-hi": "my_model",
+    "hi-en": "my_model_hi_en",
+    "en-mr": "my_model_marathi",
+    "mr-en": "my_model_mr_en",
+}
 
-def load_models():
-    global tokenizer_en_hi, model_en_hi, tokenizer_hi_en, model_hi_en
-    global tokenizer_en_mr, model_en_mr, tokenizer_mr_en, model_mr_en
+# Reports which directions have model folders on disk (available to load)
+MODEL_LOADED = {d: os.path.exists(p) for d, p in _MODEL_PATHS.items()}
 
-    print("⏳ Starting Model Loading...")
-    for folder, direction, tok_var, mdl_var in [
-        ("my_model",          "en-hi", "tokenizer_en_hi", "model_en_hi"),
-        ("my_model_hi_en",    "hi-en", "tokenizer_hi_en", "model_hi_en"),
-        ("my_model_marathi",  "en-mr", "tokenizer_en_mr", "model_en_mr"),
-        ("my_model_mr_en",    "mr-en", "tokenizer_mr_en", "model_mr_en"),
-    ]:
-        try:
-            if os.path.exists(folder):
-                tok = AutoTokenizer.from_pretrained(folder)
-                mdl = AutoModelForSeq2SeqLM.from_pretrained(folder)
-                globals()[tok_var] = tok
-                globals()[mdl_var] = mdl
-                MODEL_LOADED[direction] = True
-                print(f"✅ {direction} loaded from '{folder}'")
-        except Exception as e:
-            print(f"❌ {direction} failed: {e}")
-
-
-load_models()
+_cache_lock = threading.Lock()
+_cached_dir: str | None = None   # direction currently in RAM
+_cached_tok = None
+_cached_mdl = None
 
 
 def get_model(direction):
-    return {
-        "en-hi": (tokenizer_en_hi, model_en_hi),
-        "hi-en": (tokenizer_hi_en, model_hi_en),
-        "en-mr": (tokenizer_en_mr, model_en_mr),
-        "mr-en": (tokenizer_mr_en, model_mr_en),
-    }.get(direction, (None, None))
+    """
+    Return (tokenizer, model) for the requested direction.
+    Evicts the previously cached model before loading a new one so that
+    only one ~300 MB model lives in RAM at any time.
+    """
+    global _cached_dir, _cached_tok, _cached_mdl
+
+    with _cache_lock:
+        # Cache hit — already loaded
+        if _cached_dir == direction:
+            return _cached_tok, _cached_mdl
+
+        # Evict previous model to free RAM
+        if _cached_mdl is not None:
+            print(f"♻️  Evicting '{_cached_dir}' model to free memory ...")
+            del _cached_tok, _cached_mdl
+            gc.collect()
+            _cached_tok = _cached_mdl = None
+            _cached_dir = None
+
+        path = _MODEL_PATHS.get(direction)
+        if not path or not os.path.exists(path):
+            return None, None
+
+        try:
+            print(f"⏳ Loading '{direction}' model from '{path}' ...")
+            _cached_tok = AutoTokenizer.from_pretrained(path)
+            _cached_mdl = AutoModelForSeq2SeqLM.from_pretrained(path)
+            _cached_dir = direction
+            print(f"✅ '{direction}' model ready.")
+            return _cached_tok, _cached_mdl
+        except Exception as e:
+            print(f"❌ '{direction}' load failed: {e}")
+            return None, None
 
 
 # ── 6. OVERRIDE CHECK (all 4 directions) ─────────────────────────────────────
@@ -463,7 +481,11 @@ def translator_page():
 
 @app.route('/status')
 def status():
-    return jsonify({'models_loaded': MODEL_LOADED, 'any_loaded': any(MODEL_LOADED.values())})
+    return jsonify({
+        'models_available': MODEL_LOADED,
+        'currently_loaded': _cached_dir,
+        'any_available': any(MODEL_LOADED.values())
+    })
 
 @app.route('/transliterate', methods=['POST'])
 def transliterate():
@@ -541,15 +563,11 @@ def translate_text():
             corrected_display = corrected
             text = corrected
 
-    # ── 5. Model readiness check ──────────────────────────────────────────────
-    if not MODEL_LOADED.get(direction, False):
-        return jsonify({'error': f'Model for {direction} is not loaded. '
-                                 f'Ensure the model folder exists and restart the server.'}), 503
-
-    # ── 6. Neural translation ─────────────────────────────────────────────────
+    # ── 5 & 6. Lazy-load the model for this direction ────────────────────────
     tokenizer, model = get_model(direction)
     if not model:
-        return jsonify({'error': f'Model for {direction} could not be retrieved.'}), 503
+        return jsonify({'error': f'Model for {direction} is not available. '
+                                 f'Ensure the model folder exists on disk.'}), 503
 
     try:
         inputs = tokenizer(text, return_tensors="pt", padding=True,
@@ -586,14 +604,11 @@ def translate_file():
     if len(parts) != 2 or parts[0] == parts[1]:
         return jsonify({'error': f'Invalid direction: {direction}'}), 400
 
-    if not MODEL_LOADED.get(direction, False):
-        return jsonify({'error': f'Model for {direction} is not loaded.'}), 503
-
     try:
         filename = file.filename.lower()
         tokenizer, model = get_model(direction)
         if not model:
-            return jsonify({'error': 'Model not loaded'}), 503
+            return jsonify({'error': f'Model for {direction} is not available.'}), 503
 
         lines = []
         if filename.endswith('.pdf'):
