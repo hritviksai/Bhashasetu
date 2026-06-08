@@ -3,8 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Models
-my_model*/
+# NOTE: Model folders are tracked via Git LFS for HuggingFace Spaces deployment.
+# They are large (~300MB each) but handled by LFS automatically.
 
 # Virtual environments
 venv/
