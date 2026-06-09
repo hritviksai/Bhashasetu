@@ -1,3 +1,6 @@
+While running it may take some time to load all the 4 models so please wait for some time and after loading you can use the website also let me know if you encounter any bugs or problems while using it.
+
+
 # 🌐 BhashaSetu — Bridging India's Language Barrier
 
 <div align="center">
